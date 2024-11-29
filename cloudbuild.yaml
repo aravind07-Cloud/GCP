@@ -1,10 +1,22 @@
-steps:
+ steps:
+  # Step 1: Build the Docker image
   - name: 'gcr.io/cloud-builders/docker'
     args: ['build', '-t', 'gcr.io/gcp-deployment-441717/flask-backend:latest', '.']
     dir: 'flask-app'
 
+  # Step 2: Push the Docker image to Google Container Registry
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'gcr.io/gcp-deployment-441717/flask-backend:latest']
 
+  # Step 3: Reset the GCP Compute Engine instance to apply the updated container
   - name: 'gcr.io/cloud-builders/gcloud'
     args: ['compute', 'instances', 'reset', 'flask-app-instance', '--zone', 'us-central1-a']
+
+# Set the service account for Cloud Build to use, if needed
+service_account: '218347221474-compute@developer.gserviceaccount.com'  # Replace with your actual service account
+
+# Define the logs bucket
+logs_bucket: 'gs://log-bucket0705'  # The bucket you created for logs
+
+# Optional: Define timeout for build (if necessary)
+timeout: '1200s'  # 20 minutes
