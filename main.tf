@@ -64,7 +64,7 @@ resource "google_compute_firewall" "internal" {
   source_ranges = ["10.0.0.0/16"]
 }
 
-# Firewall to allow external traffic to application port
+# Frewall to allow external traffic to application port
 resource "google_compute_firewall" "firewall" {
   name    = "allow-5000"
   network = google_compute_network.vpc_network.name
